@@ -93,6 +93,6 @@ def evaluate_model(
         return_dict=True
     )
 
-    print(f'✅ Model evaluated, [Loss, Accuracy]: [{round(metrics[0], 2)},{round(metrics[1], 2)}')
+    print(f'✅ Model evaluated, [Loss, Accuracy]: [{round(metrics["loss"], 2)},{round(metrics["accuracy"], 2)}]')
 
     return metrics
