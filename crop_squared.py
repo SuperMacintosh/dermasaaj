@@ -11,7 +11,7 @@ import shutil
 
 
 PATH_IMG = 'raw_data/data/train/'
-start,treshold,percentage=8,25,0.97
+start,treshold,percentage=8,23,0.97
 
 
 
@@ -22,10 +22,17 @@ def is_black(image,start,treshold,percentage):
     #treshold = le seuil de noir. Noir absolu = 0 par exemple
 
 
+
     #percentage= le pourcentage de la ligne qui est noire
+    # Si une ligne horizontale ou verticale noire
+
 
     return  np.sum(image[start,start:-start,:]<treshold)/(len(image[0])*3)>percentage or np.sum(image[start:-start,start,:]<treshold)/(image.shape[0]*3)>percentage
 
+def is_black2(image,start,treshold,percentage):
+
+    #test couleur noir uniquement sur une petite ligne du coin superieur gauche au cas où le cercle déborderait sur les marges
+    return np.sum(image[start,start:start+85,:]<treshold)/(100*3) >percentage
 
 
 
@@ -141,7 +148,7 @@ def crop_square_internal(image,start,treshold,percentage):
 
 def crop_square_internal(image,start,treshold,percentage):
 
-    if is_black(image,start,treshold,percentage):
+    if is_black2(image,start,treshold,percentage):
         coordinates=return_coordinates(image,start,treshold,percentage)
         center=return_center(coordinates)
         radius=return_radius(coordinates,center)
@@ -149,7 +156,7 @@ def crop_square_internal(image,start,treshold,percentage):
         c0,c1=center
 
 
-        half_side= (2**0.5)*(radius-10)/2
+        half_side= (2**0.5)*(radius-15)/2
 
 
 
@@ -179,7 +186,7 @@ def crop_square_internal_raw(image,start,treshold,percentage):
 
 
 
-    half_side= (2**0.5)*(radius-10)/2
+    half_side= (2**0.5)*(radius-15)/2
     x0=int(c0-half_side)
 
     x1=int(c0+half_side)
@@ -238,7 +245,7 @@ def save_squared_files(start,treshold,percentage,files,directory_name):
         image=get_image(file,directory_name)
 
 
-        if is_black(image,start,treshold,percentage):
+        if is_black2(image,start,treshold,percentage):
 
             new_image=crop_square_internal_raw(image,start,treshold,percentage)
             if new_image.shape[0] <256:
