@@ -122,29 +122,7 @@ def crop_square_external_raw(image,start,treshold,percentage):
     new_image=image[y0:y1,x0:x1].copy()
 
     return new_image
-def crop_square_internal(image,start,treshold,percentage):
 
-    if is_black(image,start,treshold,percentage):
-        coordinates=return_coordinates(image,start,treshold,percentage)
-        center=return_center(coordinates)
-        radius=return_radius(coordinates,center)
-
-        c0,c1=center
-
-        half_side= (2**0.5)*radius/2
-        x0=int(c0-half_side)
-
-        x1=int(c0+half_side)
-        y0=int(c1-half_side)
-
-        y1=int(c1+half_side)
-
-
-        new_image=image[y0:y1,x0:x1].copy()
-
-        return new_image
-    else:
-        return image
 
 def crop_square_internal(image,start,treshold,percentage):
 
@@ -263,8 +241,6 @@ def save_squared_files(start,treshold,percentage,files,directory_name):
 
 
                 cv2.imwrite(f"{directory_name}/cropped_{file}", new_image,[cv2.IMWRITE_JPEG_QUALITY, 95])
-
-
 
         else:
 
