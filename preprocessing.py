@@ -13,7 +13,7 @@ def initialize_dataset_from_file(url_file_name,extract:bool=False,archive_format
                                    archive_format  = archive_format)
     return os.path.split(data_dir)[0]
 
-def get_split_image_data(parent_path, child_path, img_height, img_width,batch_size:int=32 ):
+def get_split_image_data(parent_path, child_path, img_height:int, img_width:int,batch_size:int=os.getenv('BATCH_SIZE') ):
     """
     get from targeted tensor path and return all existing files
     """
