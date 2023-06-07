@@ -26,15 +26,21 @@ def get_split_image_data(parent_path, child_path, img_height, img_width,batch_si
     return bloc
 
 
-def data_augmentation(img_height:int,img_width:int):
+def data_augmentation(img_height:int,img_width:int, val_rotation:float=0.1, val_zoom:float=0.1):
+
     result = keras.Sequential(
     [
         keras.layers.RandomFlip("horizontal",
                         input_shape=(img_height,
                                     img_width,
                                     3)),
-        keras.layers.RandomRotation(0.1),
-        keras.layers.RandomZoom(0.1),
+        keras.layers.RandomRotation(val_rotation),
+        keras.layers.RandomZoom(val_zoom),
     ]
     )
     return result
+
+def normalisation(data_source):
+
+    normalization_layer = keras.layers.Rescaling(1./255)
+    return data_source.map(lambda x, y: (normalization_layer(x), y))
