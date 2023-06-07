@@ -2,8 +2,8 @@ import matplotlib.pyplot as plt
 import os
 import pandas as pd
 
-def plot_loss_accuracy(history, epochs:int,):
-    # plot curves of the training results
+def plot_loss_accuracy(history, epochs:int):
+    # plot loss & accuracy curves of the training results: history
 
     acc = history.history['accuracy']
     val_acc = history.history['val_accuracy']

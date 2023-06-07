@@ -7,9 +7,14 @@ import os
 from preprocessing import data_augmentation
 
 
-def initialize_model(num_classes:int, kernel_size:int=3, val_dropout:float=0.2, img_height:int=256,img_width:int=256) -> Model:
+def initialize_model(num_classes:int,
+                     kernel_size:int=3,
+                     val_dropout:float=0.2,
+                     img_height:int=os.getenv('IMAGE_HEIGHT'),
+                     img_width:int=os.getenv('IMAGE_WITH')
+                     ) -> Model:
     """
-    Initialize adeQUATE CNN model
+    Initialize adequate CNN model
     """
     model = Sequential([
     data_augmentation(img_height,img_width, val_rotation=0.1, val_zoom=0.1),
