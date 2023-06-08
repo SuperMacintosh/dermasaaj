@@ -4,7 +4,6 @@ import time
 
 from tensorflow import keras
 from google.cloud import storage
-
 from dermaflow.params import *
 
 def save_model(model: keras.Model = None) -> None:
@@ -23,7 +22,6 @@ def save_model(model: keras.Model = None) -> None:
     print("✅ Model saved locally")
 
     if MODEL_TARGET == "gcs":
-        # 🎁 We give you this piece of code as a gift. Please read it carefully! Add a breakpoint if needed!
 
         model_filename = model_path.split("/")[-1] # e.g. "20230208-161047.h5" for instance
         client = storage.Client()
@@ -47,6 +45,7 @@ def load_model(stage="Production") -> keras.Model:
     Return None (but do not Raise) if no model is found
 
     """
+    print(MODEL_TARGET)
 
     if MODEL_TARGET == "local":
         print("\nLoad latest model from local registry...")
@@ -56,6 +55,7 @@ def load_model(stage="Production") -> keras.Model:
         local_model_paths = glob.glob(f"{local_model_directory}/*")
 
         if not local_model_paths:
+            print(f"\n❌ repo not found {local_model_paths}")
             return None
 
         most_recent_model_path_on_disk = sorted(local_model_paths)[-1]
@@ -90,4 +90,5 @@ def load_model(stage="Production") -> keras.Model:
 
             return None
     else:
+        print(f"\n❌ No model found where asked")
         return None
