@@ -4,8 +4,8 @@ from keras import Model, Sequential, layers
 from keras.callbacks import EarlyStopping
 import tensorflow as tf
 import os
-from preprocessing import data_augmentation
-from params import *
+from dermaflow.logic.preprocessing import data_augmentation
+from dermaflow.params import *
 
 def initialize_model(num_classes:int,
                      kernel_size:int=3,

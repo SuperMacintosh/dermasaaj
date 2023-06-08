@@ -1,7 +1,7 @@
 import tensorflow as tf
 import os
 from tensorflow import keras
-from params import *
+from dermaflow.params import *
 
 def initialize_dataset_from_file(url_file_name,extract:bool=False,archive_format:str=None):
     """

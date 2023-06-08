@@ -5,7 +5,7 @@ import time
 from tensorflow import keras
 from google.cloud import storage
 
-from params import *
+from dermaflow.params import *
 
 def save_model(model: keras.Model = None) -> None:
     """

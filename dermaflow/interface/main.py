@@ -1,5 +1,6 @@
-from preprocessing import initialize_dataset_from_file, get_split_image_data
-from model import initialize_model, compile_model, train_model, evaluate_model
+from dermaflow.logic.preprocessing import initialize_dataset_from_file, get_split_image_data
+from dermaflow.logic.model import initialize_model, compile_model, train_model, evaluate_model
+from dermaflow.params import *
 
 #initialize tensorflow dataset
 url_file_name="https://storage.googleapis.com/derma-data/raw_data/archive.zip"
@@ -26,7 +27,7 @@ val_dropout=0.2
 model=initialize_model(num_classes, kernel_size, val_dropout,img_height, img_width)
 # compile the model
 model=compile_model(model)
-#fit the model
+#train the model
 patience=2
 verbose=1
 model, history=train_model(
@@ -36,4 +37,10 @@ model, history=train_model(
         batch_size=batch_size,
         patience=patience,
         verbose=verbose
+        )
+#evaluate the model with the test data set
+metrics=evaluate_model(
+        model,
+        test_ds,
+        batch_size=BATCH_SIZE
         )
