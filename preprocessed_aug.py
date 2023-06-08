@@ -28,7 +28,7 @@ def augmentation(min_rotation, max_rotation):
 
 
 def generated_data(datagen,image_content):
-
+    image_content = np.expand_dims(img, axis=0)
     #expand dims
     datagen.fit(image_content)
 
@@ -46,7 +46,6 @@ def data_augmentation_classes(folder_class, augmented_folder,factor_mult:int):
     for file in glob.glob(f'{folder_class}/*.jpg'):
         #load the image
         img = cv2.imread(file)
-        img = np.expand_dims(img, axis=0)
         write_path='/'.join(file.split('/')[2:]).rstrip('.jpg')
 
         for i in range(factor_mult):
