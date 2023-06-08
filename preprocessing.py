@@ -1,6 +1,7 @@
 import tensorflow as tf
 import os
 from tensorflow import keras
+from params import *
 
 def initialize_dataset_from_file(url_file_name,extract:bool=False,archive_format:str=None):
     """
@@ -13,7 +14,7 @@ def initialize_dataset_from_file(url_file_name,extract:bool=False,archive_format
                                    archive_format  = archive_format)
     return os.path.split(data_dir)[0]
 
-def get_split_image_data(parent_path, child_path, img_height:int, img_width:int,batch_size:int=os.getenv('BATCH_SIZE') ):
+def get_split_image_data(parent_path, child_path, img_height:int=IMAGE_HEIGHT, img_width:int=IMAGE_WIDTH,batch_size:int=BATCH_SIZE ):
     """
     get from targeted tensor path and return all existing files
     """

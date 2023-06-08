@@ -1,15 +1,15 @@
 from preprocessing import initialize_dataset_from_file, get_split_image_data
 from model import initialize_model, compile_model, train_model, evaluate_model
-import os
+
 #initialize tensorflow dataset
 url_file_name="https://storage.googleapis.com/derma-data/raw_data/archive.zip"
 parent_path=initialize_dataset_from_file(url_file_name,extract=True,archive_format='zip')
 
 
 # calibrate data structure
-img_height=int(os.getenv('IMAGE_HEIGHT'))
-img_width=int(os.getenv('IMAGE_WIDTH'))
-batch_size=int(os.getenv('BATCH_SIZE'))
+img_height=IMAGE_HEIGHT
+img_width=IMAGE_WIDTH
+batch_size=BATCH_SIZE
 
 # Split and prepare inputs for the model
 child_path='data/train'

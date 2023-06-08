@@ -10,8 +10,8 @@ from preprocessing import data_augmentation
 def initialize_model(num_classes:int,
                      kernel_size:int=3,
                      val_dropout:float=0.2,
-                     img_height:int=os.getenv('IMAGE_HEIGHT'),
-                     img_width:int=os.getenv('IMAGE_WITH')
+                     img_height:int=IMAGE_HEIGHT,
+                     img_width:int=IMAGE_WITH
                      ) -> Model:
     """
     Initialize adequate CNN model
@@ -48,7 +48,7 @@ def train_model(
         model: Model,
         X: np.ndarray,
         validation_data,
-        batch_size=os.getenv('BATCH_SIZE'),
+        batch_size=BATCH_SIZE,
         epochs:int=20,
         patience=2,
         verbose:int=0
@@ -76,7 +76,7 @@ def train_model(
 def evaluate_model(
         model: Model,
         X: np.ndarray,
-        batch_size=os.getenv('BATCH_SIZE')
+        batch_size=BATCH_SIZE
     ) :
     """
     Evaluate trained model performance on the dataset
