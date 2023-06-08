@@ -1,6 +1,8 @@
 import matplotlib.pyplot as plt
 import os
 import pandas as pd
+from params import *
+
 
 def plot_loss_accuracy(history, epochs:int):
     # plot loss & accuracy curves of the training results: history
@@ -31,7 +33,7 @@ def plot_images_serie(data_source, num_batch:int=0):
     class_names=data_source.class_names
     plt.figure(figsize=(10, 10))
     for images, labels in data_source.take(num_batch):
-        for i in range(os.getenv('BATCH_SIZE')):
+        for i in range(BATCH_SIZE):
             nb_raws=round(1+os.getenv('BATCH_SIZE')/3)
             ax = plt.subplot(nb_raws, 3, i + 1)
             plt.imshow(images[i].numpy().astype("uint8"))
