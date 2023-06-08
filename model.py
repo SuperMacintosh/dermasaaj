@@ -5,13 +5,13 @@ from keras.callbacks import EarlyStopping
 import tensorflow as tf
 import os
 from preprocessing import data_augmentation
-
+from params import *
 
 def initialize_model(num_classes:int,
                      kernel_size:int=3,
                      val_dropout:float=0.2,
                      img_height:int=IMAGE_HEIGHT,
-                     img_width:int=IMAGE_WITH
+                     img_width:int=IMAGE_WIDTH
                      ) -> Model:
     """
     Initialize adequate CNN model

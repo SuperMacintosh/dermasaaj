@@ -7,7 +7,6 @@ def initialize_dataset_from_file(url_file_name,extract:bool=False,archive_format
     """
     Load tensorflow dataset and return local data path
     """
-    dataset_url = url_file_name
     data_dir = tf.keras.utils.get_file(
                                    origin=url_file_name,
                                    extract=extract,
