@@ -23,7 +23,7 @@ def save_model(model: keras.Model = None) -> None:
 
     if MODEL_TARGET == "gcs":
 
-        model_filename = model_path.split("/")[-1] # e.g. "20230208-161047.h5" for instance
+        model_filename = model_path.split("/")[-1]
         client = storage.Client()
         bucket = client.bucket(BUCKET_NAME)
         blob = bucket.blob(f"models/{model_filename}")
@@ -45,7 +45,7 @@ def load_model(stage="Production") -> keras.Model:
     Return None (but do not Raise) if no model is found
 
     """
-    print(MODEL_TARGET)
+    ## print(MODEL_TARGET)
 
     if MODEL_TARGET == "local":
         print("\nLoad latest model from local registry...")

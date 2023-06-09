@@ -2,6 +2,12 @@ import tensorflow as tf
 import os
 from tensorflow import keras
 from dermaflow.params import *
+import glob
+import cv2
+import numpy as np
+import random
+from shutil import copyfile
+from keras.preprocessing.image import ImageDataGenerator
 
 def initialize_dataset_from_file(url_file_name,extract:bool=False,archive_format:str=None):
     """
@@ -44,3 +50,53 @@ def normalisation(data_source):
 
     normalization_layer = keras.layers.Rescaling(1./255)
     return data_source.map(lambda x, y: (normalization_layer(x), y))
+
+
+def augmentation(min_rotation, max_rotation):
+
+    # Rotation range
+    rotation_range = random.randint(min_rotation,max_rotation)
+
+
+    datagen = ImageDataGenerator(
+        featurewise_center = False,
+        featurewise_std_normalization = False,
+        rotation_range = rotation_range,
+        width_shift_range = 0.02,
+        height_shift_range = 0.02,
+        vertical_flip = True,
+        horizontal_flip = True,
+        zoom_range = (0.8, 1.2),
+        fill_mode='nearest'
+        )
+    return datagen
+
+
+def generated_data(datagen,image_content):
+    image_content = np.expand_dims(image_content, axis=0)
+    #expand dims
+    datagen.fit(image_content)
+
+    #Augmentation of the image
+    X_augmented = datagen.flow(image_content, shuffle=False, batch_size=1)
+
+    #Reduce dims
+    X_aug = np.squeeze(X_augmented[0], axis=0)
+    X_aug = X_aug.astype('uint8')
+
+
+    return X_aug
+
+def data_augmentation_classes(folder_class, augmented_folder,factor_mult:int):
+    for file in glob.glob(f'{folder_class}/*.jpg'):
+        # copy first the original file
+        fdst=f'{augmented_folder}/{file}'
+        copyfile(file, fdst)
+        #load the image
+        img = cv2.imread(file)
+        write_path='/'.join(file.split('/')[2:]).rstrip('.jpg')
+
+        for i in range(factor_mult):
+            X_aug=generated_data(img, i+1)
+            #save the data
+            cv2.imwrite(f'{augmented_folder}/{write_path}_{i}.jpg', X_aug)
