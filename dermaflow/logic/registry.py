@@ -6,7 +6,7 @@ from tensorflow import keras
 from google.cloud import storage
 from dermaflow.params import *
 
-def save_model(model: keras.Model = None) -> None:
+def save_model(model: keras.Model = None,model_type:str=MODEL_TYPE) -> None:
     """
     Persist trained model locally on the hard drive at f"{LOCAL_REGISTRY_PATH}/models/{timestamp}.h5"
     - if MODEL_TARGET='gcs', also persist it in your bucket on GCS at "models/{timestamp}.h5" --> unit 02 only
@@ -16,7 +16,7 @@ def save_model(model: keras.Model = None) -> None:
     timestamp = time.strftime("%Y%m%d-%H%M%S")
 
     # Save model locally
-    model_path = os.path.join(LOCAL_REGISTRY_PATH, "models", f"{timestamp}.h5")
+    model_path = os.path.join(LOCAL_REGISTRY_PATH, "models", f"{model_type}_{timestamp}.h5")
     model.save(model_path)
 
     print("✅ Model saved locally")
@@ -35,7 +35,7 @@ def save_model(model: keras.Model = None) -> None:
     return None
 
 
-def load_model(stage="Production") -> keras.Model:
+def load_model(stage="Production",model_type:str=MODEL_TYPE) -> keras.Model:
     """
     Return a saved model:
     - locally (latest one in alphabetical order)
@@ -52,7 +52,7 @@ def load_model(stage="Production") -> keras.Model:
 
         # Get the latest model version name by the timestamp on disk
         local_model_directory = os.path.join(LOCAL_REGISTRY_PATH, "models")
-        local_model_paths = glob.glob(f"{local_model_directory}/*")
+        local_model_paths = glob.glob(f"{local_model_directory}/{model_type}_*")
 
         if not local_model_paths:
             print(f"\n❌ repo not found {local_model_paths}")

@@ -1,13 +1,14 @@
+from dermaflow.params import *
 import tensorflow as tf
 import os
 from tensorflow import keras
-from dermaflow.params import *
 import glob
 import cv2
 import numpy as np
 import random
 from shutil import copyfile
 from keras.preprocessing.image import ImageDataGenerator
+from keras.applications.densenet import preprocess_input
 
 def initialize_dataset_from_file(url_file_name,extract:bool=False,archive_format:str=None):
     """
@@ -51,8 +52,36 @@ def normalisation(data_source):
     normalization_layer = keras.layers.Rescaling(1./255)
     return data_source.map(lambda x, y: (normalization_layer(x), y))
 
+def images_augmentation_class(folder_class, augmented_folder,factor_mult:int, file_suffix:str='jpg'):
+    """
+    treat the whole existing files into folder_class for a given class.
+    expect images with suffix_file == jpg
+    """
+    if not folder_class.exists():
+        print(f'\n❌ Folder {folder_class} not found')
+        return None
+    if not augmented_folder.exists():
+        print(f'\n❌ Folder {augmented_folder} not found. Please create it before')
+        return None
+        """
+        os.mkdir augmented_folder
+        print(f'\n Folder {augmented_folder} created')
+        """
 
-def augmentation(min_rotation, max_rotation):
+    for file in glob.glob(f'{folder_class}/*.{file_suffix}'):
+        # copy first the original file
+        fdst=f'{augmented_folder}/{file}'
+        copyfile(file, fdst)
+        #load the image
+        img = cv2.imread(file)
+        write_path='/'.join(file.split('/')[2:]).rstrip('.jpg')
+
+        for i in range(factor_mult):
+            X_aug=image_transforme(img, i+1)
+            #save the data
+            cv2.imwrite(f'{augmented_folder}/{write_path}_{i}.jpg', X_aug)
+
+def transformer_augmentation(min_rotation, max_rotation):
 
     # Rotation range
     rotation_range = random.randint(min_rotation,max_rotation)
@@ -72,7 +101,7 @@ def augmentation(min_rotation, max_rotation):
     return datagen
 
 
-def generated_data(datagen,image_content):
+def image_transforme(datagen,image_content):
     image_content = np.expand_dims(image_content, axis=0)
     #expand dims
     datagen.fit(image_content)
@@ -87,16 +116,6 @@ def generated_data(datagen,image_content):
 
     return X_aug
 
-def data_augmentation_classes(folder_class, augmented_folder,factor_mult:int):
-    for file in glob.glob(f'{folder_class}/*.jpg'):
-        # copy first the original file
-        fdst=f'{augmented_folder}/{file}'
-        copyfile(file, fdst)
-        #load the image
-        img = cv2.imread(file)
-        write_path='/'.join(file.split('/')[2:]).rstrip('.jpg')
-
-        for i in range(factor_mult):
-            X_aug=generated_data(img, i+1)
-            #save the data
-            cv2.imwrite(f'{augmented_folder}/{write_path}_{i}.jpg', X_aug)
+def densenet201_preprocess(X,y):
+    # expected transformation for 201 use
+    return preprocess_input(X),y
