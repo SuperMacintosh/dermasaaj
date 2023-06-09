@@ -1,0 +1,12 @@
+# Scientific python
+numpy
+pandas
+matplotlib
+
+# Deep Learning
+tensorflow
+tensorflow-datasets
+
+# Image processing
+Pillow
+opencv-python
