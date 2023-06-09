@@ -6,3 +6,4 @@ cropped_data/
 .DS_Store
 ATTRIBUTION.txt
 CSV_concatenate.ipynb
+**/__pycache__/
