@@ -1,7 +1,7 @@
 import pandas as pd
 import tensorflow as tf
 import numpy as np
-from params import DATA_PATH
+from dermasaaj.params import DATA_PATH
 from PIL import Image
 import pathlib
 
