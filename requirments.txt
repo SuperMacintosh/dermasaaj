@@ -6,3 +6,4 @@ random
 cv2
 shutil
 pathlib
+fastapi
