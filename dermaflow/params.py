@@ -16,8 +16,14 @@ IMAGES_CROP=os.environ.get("IMAGES_CROP")
 IMAGES_AUGMENT=os.environ.get("IMAGES_AUGMENT")
 OUTPUT_PARENT_FOLDER=os.environ.get("OUTPUT_PARENT_FOLDER")
 MODEL_TYPE=os.environ.get("MODEL_TYPE").strip(' ')
+MODEL_SUFFIX=os.environ.get("MODEL_SUFFIX").strip(' ')
 
 ##################  CONSTANTS  #####################
 # LOCAL_DATA_PATH = os.path.join(os.path.expanduser('~'), ".lewagon", "mlops", "project_outputs")
 LOCAL_REGISTRY_PATH =  os.path.join(os.path.expanduser('~'), ".lewagon", "mlops", "project_outputs")
 LOCAL_CHECKPOINT_PATH =  os.path.join(os.path.expanduser('~'), ".lewagon", "mlops", "project_outputs","checkpoint")
+
+GCP_PROJECT_ID=os.environ.get("GCP_PROJECT_ID").strip(' ')
+DOCKER_IMAGE_NAME=os.environ.get("DOCKER_IMAGE_NAME").strip(' ')
+GCR_MULTI_REGION=os.environ.get("GCR_MULTI_REGION").strip(' ')
+GCR_REGION=os.environ.get("GCR_REGION").strip(' ')

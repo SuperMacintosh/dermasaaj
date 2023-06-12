@@ -20,7 +20,7 @@ app.add_middleware(
 )
 
 # Predict end point
-@app.get("/predict")
+@app.post("/predict")
 
 def predict(
         image_url: str,             # url/path image
@@ -36,7 +36,7 @@ def predict(
         result=app.state.model.predict(img_array,candidate_gender,candidate_age,candidate_anatom_site)
     # score = tf.nn.softmax(result[0])
     else:
-        result=[100000,0]
+        result=[200000,0]
 
     return{'This image most likely belongs to ': int(result[0])}
 
@@ -44,4 +44,4 @@ def predict(
 
 @app.get("/")
 def root():
-    return {'Dermasaaj - new': 'Here we are'}
+    return {'Dermasaaj - new': 'Here we are !!!!'}
