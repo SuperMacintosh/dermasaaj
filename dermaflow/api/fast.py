@@ -20,7 +20,7 @@ app.add_middleware(
 )
 
 # Predict end point
-@app.post("/predict")
+@app.get("/predict")
 
 def predict(
         image_url: str,             # url/path image
@@ -44,4 +44,4 @@ def predict(
 
 @app.get("/")
 def root():
-    return {'Dermasaaj - new': 'Here we are !!!!'}
+    return {'Dermasaaj - new': ' ✅ Here we are'}

@@ -1,12 +1,12 @@
 import numpy as np
 # from tensorflow import keras
 from keras import Model, Sequential, layers
-from keras.callbacks import EarlyStopping,CSVLogger, ModelCheckpoint
+from keras.callbacks import EarlyStopping,CSVLogger, ModelCheckpoint, ReduceLROnPlateau
 import tensorflow as tf
 import os
 from dermaflow.logic.preprocessing import data_augmentation
 from dermaflow.params import *
-from keras.applications.densenet import DenseNet201
+from keras.applications.densenet import DenseNet201, DenseNet121
 
 def initialize_model(num_classes:int,
                     model_type:str=MODEL_TYPE,
@@ -52,6 +52,35 @@ def initialize_model(num_classes:int,
         layers.Dense(32, activation='relu'),
         layers.Dense(num_classes, activation='softmax')
         ])
+    elif str.upper(model_type) == 'DENSENET121':
+
+        model=DenseNet121(
+                weights='imagenet',
+                include_top=False,
+                input_shape=input_shape
+                )
+
+        model=model.output
+        model= Sequential([
+        model,
+        layers.GlobalAveragePooling2D(),
+        layers.BatchNormalization(),
+        layers.Dropout(0.5),
+        layers.Dense(1024,activation='relu'),
+        layers.Dense(512,activation='relu'),
+        layers.BatchNormalization(),
+        layers.Dropout(0.5)
+        ])
+        preds=layers.Dense(8,activation='softmax')(model) #FC-layer
+        model=Model(inputs=model.input,outputs=preds)
+
+        # freeze all layers except for the last 8
+        # ?????
+        for layer in model.layers[:-8]:
+            layer.trainable=False
+
+        for layer in model.layers[-8:]:
+            layer.trainable=True
 
 
     else:
@@ -68,13 +97,19 @@ def compile_model(model: Model, model_type:str=MODEL_TYPE) -> Model:
     if os.upper(model_type) == 'DERMA':
         loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
         opt='adam'
+        metrics=['accuracy']
     elif  os.upper(model_type) == 'DENSENET201':
         loss='categorical_crossentropy'
         opt =tf.keras.optimizers.Adam(learning_rate=0.001)
+        metrics=['accuracy']
+    elif os.upper(model_type) == 'DENSENET121':
+        loss='categorical_crossentropy'
+        opt='adam'
+        metrics=['accuracy', tf.keras.metrics.Recall()]
 
     model.compile(optimizer=opt,
               loss=loss,
-              metrics=['accuracy'])
+              metrics=metrics)
 
     print(f'✅ Model compiled')
     return model
@@ -87,16 +122,21 @@ def train_model(
         batch_size=BATCH_SIZE,
         epochs:int=20,
         patience:int=2,
-        verbose:int=0
+        verbose:int=0,
+        factor:float=0.5,
+        min_lr:float=1e-3,
+        save_best_only:bool=True,
+        restore_best_weights:bool=True
     ) :
 
     """
     Fit the model and return a tuple (fitted_model, history)
     """
+
     if os.upper(model_type) == 'DERMA':
         monitor="val_loss"
         mode='max'
-    elif os.upper(model_type) == 'DENSENET201':
+    elif os.upper(model_type) in ['DENSENET201','DENSENET121']:
         monitor = 'val_accuracy'
         mode='max'
 
@@ -104,10 +144,10 @@ def train_model(
         monitor=monitor,
         mode=mode,
         patience=patience,
-        restore_best_weights=True,
+        restore_best_weights=restore_best_weights,
         verbose=verbose
     )
-    csv_logger = CSVLogger('training.log')
+    csv_logger = CSVLogger(f'{model_type}_training.log')
 
     checkpoint_callback = ModelCheckpoint(
                 filepath=LOCAL_CHECKPOINT_PATH,
@@ -117,13 +157,34 @@ def train_model(
                 save_best_only=True
                 )
 
+    if os.upper(model_type) == 'DENSENET121':
+        anne = ReduceLROnPlateau(
+                        monitor=monitor,
+                        factor=factor,
+                        patience=patience,
+                        verbose=verbose,
+                        min_lr=1e-3
+                        )
+        checkpoint = ModelCheckpoint(
+                    f'{LOCAL_CHECKPOINT_PATH}/{model_type}_model.h5',
+                    verbose=verbose,
+                    save_best_only=save_best_only
+                    )
+        callbacks=[anne,checkpoint]
+    else:
+        callbacks=[es, csv_logger,checkpoint_callback]
+
+
     history = model.fit(X,
-                        model_type,
                         validation_data,
                         epochs,
-                        callbacks=[es, csv_logger,checkpoint_callback]
+                        batch_size,
+                        callbacks=callbacks
     )
+    # model_type,
+
     print(f'✅ Model succesfully trained through {len(history.epoch)} epochs')
+
     return model, history
 
 def evaluate_model(
@@ -146,6 +207,6 @@ def evaluate_model(
         return_dict=True
     )
 
-    print(f'✅ Model evaluated, [Loss, Accuracy]: [{round(metrics["loss"], 2)},{round(metrics["accuracy"], 2)}]')
+    print(f'✅ Model evaluated, [Loss, Accuracy, Recall]: [{round(metrics["loss"], 2)},{round(metrics["accuracy"], 2)},{round(metrics.get("accuracy"), 2)}]')
 
     return metrics

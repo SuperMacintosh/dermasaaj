@@ -43,7 +43,7 @@ test_ds=get_split_image_data(parent_path, child_path, img_height, img_width,batc
 child_path='valid'
 val_ds=get_split_image_data(parent_path, child_path, img_height, img_width,batch_size )
 
-if os.upper(MODEL_TYPE) == 'DENSENET201':
+if os.upper(MODEL_TYPE) in ['DENSENET201', 'DENSENET121']:
     train_ds = train_ds.map(densenet201_preprocess)
     val_ds = val_ds.map(densenet201_preprocess)
     test_ds = test_ds.map(densenet201_preprocess)
@@ -66,7 +66,11 @@ model, history=train_model(
         val_ds,
         batch_size=batch_size,
         patience=patience,
-        verbose=verbose
+        verbose=verbose,
+        factor=0.5,
+        min_lr=1e-3,
+        save_best_only=True,
+        restore_best_weights=True
         )
 # save the model
 save_model(MODEL_TYPE, model)  # uses LOCAL_REGISTRY_PATH

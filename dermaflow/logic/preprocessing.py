@@ -117,5 +117,5 @@ def image_transforme(datagen,image_content):
     return X_aug
 
 def densenet201_preprocess(X,y):
-    # expected transformation for 201 use
+    # expected transformation for 201 or 121 uses
     return preprocess_input(X),y
