@@ -7,7 +7,7 @@ from params import *
 
 app = FastAPI()
 
-app.state.model=load_model()
+# app.state.model=load_model()
 
 # Allowing all middleware is optional, but good practice for dev purposes
 
@@ -18,8 +18,8 @@ app.add_middleware(
     allow_methods=["*"],  # Allows all methods
     allow_headers=["*"],  # Allows all headers
 )
-# end point
-
+"""
+# Predict end point
 @app.get("/predict")
 
 def predict(
@@ -37,6 +37,8 @@ def predict(
     # score = tf.nn.softmax(result[0])
 
     return{'This image most likely belongs to ': int(result[0])}
+
+"""
 
 @app.get("/")
 def root():

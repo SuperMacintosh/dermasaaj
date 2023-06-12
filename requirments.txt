@@ -7,3 +7,4 @@ cv2
 shutil
 pathlib
 fastapi
+uvicorn

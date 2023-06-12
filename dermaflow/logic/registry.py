@@ -35,7 +35,7 @@ def save_model(model: keras.Model = None,model_type:str=MODEL_TYPE) -> None:
     return None
 
 
-def load_model(stage="Production",model_type:str=MODEL_TYPE) -> keras.Model:
+def load_model(stage="Production", model_type:str=MODEL_TYPE) -> keras.Model:
     """
     Return a saved model:
     - locally (latest one in alphabetical order)
