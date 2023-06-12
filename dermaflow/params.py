@@ -15,7 +15,7 @@ ARCHIVE_PARENT_FOLDER=os.environ.get("ARCHIVE_PARENT_FOLDER")
 IMAGES_CROP=os.environ.get("IMAGES_CROP")
 IMAGES_AUGMENT=os.environ.get("IMAGES_AUGMENT")
 OUTPUT_PARENT_FOLDER=os.environ.get("OUTPUT_PARENT_FOLDER")
-MODEL_TYPE=os.environ.get("MODEL_TYPE")
+MODEL_TYPE=os.environ.get("MODEL_TYPE").strip(' ')
 
 ##################  CONSTANTS  #####################
 # LOCAL_DATA_PATH = os.path.join(os.path.expanduser('~'), ".lewagon", "mlops", "project_outputs")
