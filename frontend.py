@@ -21,10 +21,11 @@ if img_file_buffer is not None:
       img_bytes = img_file_buffer.getvalue()
 
       ### Make request to  API (stream=True to stream response as bytes)
-      # res = requests.post(url + "/predict", files={'img': img_bytes},data={'age':25, 'sexe':1})
-      res = requests.post(url + "/predict", files={'img': img_bytes})
+      res = requests.post(url + "/test", files={'img': img_bytes},data={'age':25, 'sexe':1})
+      # res = requests.post(url + "/predict_cnn", files={'img': img_bytes})
 
       if res.status_code == 200:
-        ### Display the image returned by the API
         # st.image(res.content, caption="Image returned from API ☝️")
-        st.text(res.content)
+        st.text(f'Prediction ☝️ \n{res.content}')
+      else:
+        st.text(f'\n❌ Prediction failed - status code : {res.status_code}')

@@ -9,8 +9,8 @@ from keras.applications.densenet import preprocess_input
 
 
 app = FastAPI()
-
-app.state.model=load_model()
+model=load_model()
+app.state.model=model
 
 # Allowing all middleware is optional, but good practice for dev purposes
 
@@ -22,51 +22,47 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
+@app.post("/predict_test")
+
+def predict_test(img_file: UploadFile=File(...)):
+    ### Receiving and decoding the image
+    return {'message': ' ✅ Api reached '}
+
 # Predict end point
-@app.post("/predict")
+@app.post("/predict_cnn")
+
+async def predict_cnn(img_file: UploadFile=File(...)):
+    ### Receiving and decoding the image
+
+    if app.state.model == None:
+        return {'message': f"\n❌ No model found where asked"}
+
+    contents = await img_file.read()
+    nparr = np.fromstring(contents, np.uint8)
+    img_array = cv2.imdecode(nparr, cv2.IMREAD_COLOR) # type(cv2_img) => numpy.ndarray
+    img_array= preprocess_input(img_array)
+    img_array = tf.expand_dims(img_array, 0)
+    result=app.state.model.predict(img_array)
+    msg=f'✅ This image most likely belongs to {CLASS_NAMES[np.argmax(result)]} with a probability of {round(100*np.max(result),2)}%'
+    return {'message': msg}
 
 
-def predict(img_file: UploadFile=File(...),
+@app.post("/predict_full")
+
+async def predict_full(img_file: UploadFile=File(...),
                         candidate_age: int = Form(...),
                         candidate_gender: int = Form(...),
                         candidate_anatom_site: int = Form(...)
                         ):
     ### Receiving and decoding the image
-    contents = img_file.read()
+    contents = await img_file.read()
     nparr = np.fromstring(contents, np.uint8)
     img_array = cv2.imdecode(nparr, cv2.IMREAD_COLOR) # type(cv2_img) => numpy.ndarray
     img_array= preprocess_input(img_array)
     img_array = tf.expand_dims(img_array, 0)
-    # result=app.state.model.predict(img_array,candidate_gender,candidate_age,candidate_anatom_site)
-    result=app.state.model.predict(img_array)
-
-    return{f'✅ This image most likely belongs to {CLASS_NAMES[np.argmax(result)]} with a probability of {round(100*np.max(result),2)}%'}
-
-@app.post("/upload_items")
-
-async def post(
-    image: UploadFile = File(...),
-    age: int = Form(...),
-    gender: int = Form(...),
-):
-    contents = await image.read()
-    nparr = np.fromstring(contents, np.uint8)
-    cv2_img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-    print(cv2_img.shape)
-
-     # tf.convert_to_tensor(img)
-
-    if 0:
-
-        img = tf.keras.utils.load_img(fp, target_size=(IMAGE_HEIGHT, IMAGE_WIDTH))
-        img_array = tf.keras.utils.img_to_array(img)
-        img_array = tf.expand_dims(img_array, 0)
-
-        result=app.state.model.predict(img_array,candidate_gender,candidate_age,candidate_anatom_site)
-    # score = tf.nn.softmax(result[0])
-    else:
-
-        return{'age': age,'gender': gender, 'img_shape': cv2_img.shape}
+    result=app.state.model.predict(img_array,candidate_gender,candidate_age,candidate_anatom_site)
+    msg=f'✅ This image most likely belongs to {CLASS_NAMES[np.argmax(result)]} with a probability of {round(100*np.max(result),2)}%'
+    return {'message': msg}
 
 
 @app.post('/test')

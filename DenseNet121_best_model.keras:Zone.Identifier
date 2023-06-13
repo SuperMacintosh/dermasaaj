@@ -1,0 +1,4 @@
+[ZoneTransfer]
+ZoneId=3
+ReferrerUrl=https://console.cloud.google.com/
+HostUrl=https://storage.googleapis.com/derma-data/models/DenseNet121_best_model.keras
