@@ -3,19 +3,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from dermaflow.logic.registry import load_model
 import tensorflow as tf
 from dermaflow.params import *
-from pydantic import BaseModel
-# import tempfile
 import numpy as np
-# import io, import base64, import imageio
 import cv2
-from starlette.responses import Response
-
-
-class Item(BaseModel):
-    img: str
-    candidate_gender: int | None = None
-    candidate_age: int | None = None
-    candidate_anatom_site: int | None = None
+from keras.applications.densenet import preprocess_input
 
 
 app = FastAPI()
@@ -33,25 +23,24 @@ app.add_middleware(
 )
 
 # Predict end point
-@app.get("/predict")
+@app.post("/predict")
 
-def predict(
-        image_url: str,             # url/path image
-        candidate_gender: int,      # 0,1 : male, female
-        candidate_age: int,         # [0, 110] : month & year of birthday
-        candidate_anatom_site: int  # [0,8]
-    ):
-    if 0:
-        img = tf.keras.utils.load_img(image_url, target_size=(IMAGE_HEIGHT, IMAGE_WIDTH))
-        img_array = tf.keras.utils.img_to_array(img)
-        img_array = tf.expand_dims(img_array, 0)
 
-        result=app.state.model.predict(img_array,candidate_gender,candidate_age,candidate_anatom_site)
-    # score = tf.nn.softmax(result[0])
-    else:
-        result=[-9999,0]
+def predict(img_file: UploadFile=File(...),
+                        candidate_age: int = Form(...),
+                        candidate_gender: int = Form(...),
+                        candidate_anatom_site: int = Form(...)
+                        ):
+    ### Receiving and decoding the image
+    contents = img_file.read()
+    nparr = np.fromstring(contents, np.uint8)
+    img_array = cv2.imdecode(nparr, cv2.IMREAD_COLOR) # type(cv2_img) => numpy.ndarray
+    img_array= preprocess_input(img_array)
+    img_array = tf.expand_dims(img_array, 0)
+    # result=app.state.model.predict(img_array,candidate_gender,candidate_age,candidate_anatom_site)
+    result=app.state.model.predict(img_array)
 
-    return{'✅ This image most likely belongs to ': int(result[0])}
+    return{f'✅ This image most likely belongs to {CLASS_NAMES[np.argmax(result)]} with a probability of {round(100*np.max(result),2)}%'}
 
 @app.post("/upload_items")
 
@@ -90,8 +79,6 @@ async def receive_image(img: UploadFile=File(...),
     contents = await img.read()
 
     nparr = np.fromstring(contents, np.uint8)
-    print(nparr.shape)
-    print(nparr)
     cv2_img = cv2.imdecode(nparr, cv2.IMREAD_COLOR) # type(cv2_img) => numpy.ndarray
 
     ### Encoding and responding with the image

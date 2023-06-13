@@ -32,6 +32,9 @@ def get_split_image_data(parent_path, child_path, img_height:int=IMAGE_HEIGHT, i
 
     return bloc
 
+def class_names(df):
+    # return the class names
+    return df.class_names
 
 def data_augmentation(img_height:int,img_width:int, val_rotation:float=0.1, val_zoom:float=0.1):
 

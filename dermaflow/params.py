@@ -19,7 +19,10 @@ OUTPUT_PARENT_FOLDER=os.environ.get("OUTPUT_PARENT_FOLDER")
 MODEL_TYPE=os.environ.get("MODEL_TYPE").strip(' ')
 MODEL_SUFFIX=os.environ.get("MODEL_SUFFIX").strip(' ')
 
+
 ##################  CONSTANTS  #####################
+CLASS_NAMES=['AK', 'BCC','BKL', 'DF', 'MEL', 'NV', 'SCC', 'VASC']
+
 # LOCAL_DATA_PATH = os.path.join(os.path.expanduser('~'), ".lewagon", "mlops", "project_outputs")
 LOCAL_REGISTRY_PATH =  os.path.join(os.path.expanduser('~'), ".lewagon", "mlops", "project_outputs")
 LOCAL_CHECKPOINT_PATH =  os.path.join(os.path.expanduser('~'), ".lewagon", "mlops", "project_outputs","checkpoint")
