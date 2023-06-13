@@ -75,7 +75,6 @@ def initialize_model(num_classes:int,
         model=Model(inputs=model.input,outputs=preds)
 
         # freeze all layers except for the last 8
-        # ?????
         for layer in model.layers[:-8]:
             layer.trainable=False
 
@@ -163,7 +162,7 @@ def train_model(
                         factor=factor,
                         patience=patience,
                         verbose=verbose,
-                        min_lr=1e-3
+                        min_lr=min_lr
                         )
         checkpoint = ModelCheckpoint(
                     f'{LOCAL_CHECKPOINT_PATH}/{model_type}_model.h5',
