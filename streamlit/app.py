@@ -84,33 +84,34 @@ if uploaded_file is not None:
     st.image(uploaded_file, width=400,caption='Lésion cutanée')
 
     bytes_data = uploaded_file.getvalue()
-    #st.write(bytes_data)
-    #st.write(image_uploaded)
+
 
 #############################################################
 
 col1, col2,col3,col4,col5= st.columns(5)
 if col3.button('Valider'):
-    # print is visible in the server output, not in the page
-    #response = requests.get(url,params)
-    #response=response.json()
-    #st.write(f"{round(response['proba'],3)} pourcent de chance d'être en bonne santé")
+    #params = {
+    #'sex': sex,
+    #'age': age,
+    #'lesion':lesion
+    #}
 
-    st.write(bytes_data)
+    #res = requests.post(url, files={'img': bytes_data}, data=params, headers=headers)
+    #if res.status_code == 200:
+    #   st.write(res.content)
+    # response=res.json()
+    #st.write(f"{round(response['proba'],3)} pourcent de chance d'être en bonne santé")
+    #else:
+    #   st.markdown("**Oops**, something went wrong 😓 Please try again.")
+    #  print(res.status_code, res.content)
+
+
 
     pass
 else:
     pass
-params = {
-    #'sex': sex,
-    #'age': age,
-    #'lesion':lesion
-}
 
-url="https://www.gscloudderamsaj.com"
-#response = requests.get(url,params)
-#response=response.json()
-#st.write(f"Le prix de la course est de  {round(response['fare'],3)} $")
+
 
 
 #headers = {
@@ -119,12 +120,7 @@ url="https://www.gscloudderamsaj.com"
 #}
 
 
-#res = requests.post(url, files={'img': bytes_data}, data=params, headers=headers)
-#if res.status_code == 200:
- #   st.write(res.content)
-#else:
- #   st.markdown("**Oops**, something went wrong 😓 Please try again.")
-  #  print(res.status_code, res.content)
+
 
 
 hide_streamlit_style = """
