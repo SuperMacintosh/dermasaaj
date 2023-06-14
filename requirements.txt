@@ -7,3 +7,5 @@ google-cloud-storage==2.4.0
 opencv-python==4.7.0.72
 fastapi
 uvicorn
+st-pages
+streamlit==1.11.1
