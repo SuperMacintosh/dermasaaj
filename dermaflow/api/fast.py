@@ -10,7 +10,7 @@ from dermaflow.logic.model import compile_model
 
 app = FastAPI()
 
-# model=load_model()
+#model=load_model()
 
 model = tf.keras.models.load_model('DenseNet121_best_model.keras', compile=False)
 model = compile_model(model, MODEL_TYPE)
