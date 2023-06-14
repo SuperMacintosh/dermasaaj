@@ -55,13 +55,13 @@ def load_model(stage="Production", model_type:str=MODEL_TYPE, compile:bool=True)
         # Get the latest model version name by the timestamp on disk
         local_model_directory = os.path.join(LOCAL_REGISTRY_PATH, "models")
         local_model_paths = glob.glob(f"{local_model_directory}/{model_type}_*{MODEL_SUFFIX}")
-        # print(local_model_directory)
+        print(local_model_paths)
         if not local_model_paths:
             print(f"\n❌ repo not found {local_model_paths}")
             return None
 
         most_recent_model_path_on_disk = sorted(local_model_paths)[-1]
-        # print(most_recent_model_path_on_disk)
+        print(most_recent_model_path_on_disk)
         print("\nLoad latest model from disk...")
 
         latest_model = keras.models.load_model(most_recent_model_path_on_disk, compile=compile)

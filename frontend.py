@@ -3,6 +3,8 @@ from PIL import Image
 import requests
 from dotenv import load_dotenv
 import json
+import cv2
+import numpy as np
 
 url = "http://localhost:8000"
 
@@ -19,11 +21,15 @@ if img_file_buffer is not None:
   # with col2:
     with st.spinner("Wait for it..."):
       ### Get bytes from the file buffer
-      img_bytes = img_file_buffer.getvalue()
-
-      ### Make request to  API (stream=True to stream response as bytes)
+      img = img_file_buffer.getvalue()
+      img_bytes=img
+      arr = np.fromstring(img_bytes, np.uint8)
+      # st.write(arr.shape)
+      img_array = cv2.imdecode(arr,cv2.IMREAD_COLOR)
+      imageRGB = cv2.cvtColor(img_array , cv2.COLOR_BGR2RGB)
+      st.image(img)
       # res = requests.post(url + "/test", files={'img': img_bytes},data={'age':30, 'sexe':0})
-      res = requests.post(url + "/predict_cnn", files={'img': img_bytes})
+      res = requests.post(url + "/predict_cnn", files={'img': img})
 
       if res.status_code == 200:
         # st.image(res.content, caption="Image returned from API ☝️")

@@ -5,14 +5,15 @@ import tensorflow as tf
 from dermaflow.params import *
 import numpy as np
 import cv2
+import time
 from keras.applications.densenet import preprocess_input
 from dermaflow.logic.model import compile_model
+# import tempfile
 
 app = FastAPI()
 
-#model=load_model()
-
-model = tf.keras.models.load_model('DenseNet121_best_model.keras', compile=False)
+model=load_model(compile=False)
+# model = tf.keras.models.load_model('DenseNet121_best_model.keras', compile=False)
 model = compile_model(model, MODEL_TYPE)
 app.state.model=model
 
@@ -38,19 +39,31 @@ async def predict_test(img: UploadFile=File(...)):
 
 async def predict_cnn(img: UploadFile=File(...)):
     ### Receiving and decoding the image
-
     if app.state.model == None:
         return {'message': f"\n❌ No model found where asked"}
 
     contents = await img.read()
-    nparr = np.fromstring(contents, np.uint8)
-    img_array = cv2.imdecode(nparr, cv2.IMREAD_COLOR) # type(cv2_img) => numpy.ndarray
-    img_array=cv2.resize(img_array, (IMAGE_HEIGHT, IMAGE_WIDTH))
+    timestamp = str(time.time()).replace(".","")
+
+    with open(f"{timestamp}.jpg", "wb") as f:
+        f.write(contents)
+
+    img = tf.keras.utils.load_img(f"{timestamp}.jpg", target_size=(IMAGE_HEIGHT, IMAGE_WIDTH))
+    img_array = tf.keras.utils.img_to_array(img)
+    #nparr = np.fromstring(contents, np.uint8)
+    #img_array = cv2.imdecode(nparr, cv2.IMREAD_COLOR) # type(cv2_img) => numpy.ndarray
+    #img_array = cv2.cvtColor(img_array , cv2.COLOR_BGR2RGB)
+
+    #img_array=cv2.resize(img_array, (IMAGE_HEIGHT, IMAGE_WIDTH))
+    #img_array=tf.image.resize(img_array,(IMAGE_HEIGHT,IMAGE_WIDTH))
+
     img_array= preprocess_input(img_array)
     img_array = tf.expand_dims(img_array, 0)
     result=app.state.model.predict(img_array)
-    msg=f'✅ This image most likely belongs to {CLASS_NAMES[np.argmax(result)]} with a probability of {round(100*np.max(result),2)}%'
 
+    msg='-'.join(str(x) for x in result)
+    msg+=f'\n✅ This image most likely belongs to {CLASS_NAMES[np.argmax(result)]} with a probability of {round(100*np.max(result),2)}%'
+    # return {'message': msg,'class':(CLASS_NAMES[np.argmax(result)]), 'proba_class': (round(100*np.max(result),2)), 'proba_vect': result}
     return {'message': msg}
 
 
