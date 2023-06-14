@@ -93,15 +93,15 @@ def compile_model(model: Model, model_type:str=MODEL_TYPE) -> Model:
     """
     Compile the defined CNN model
     """
-    if os.upper(model_type) == 'DERMA':
+    if model_type.upper() == 'DERMA':
         loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
         opt='adam'
         metrics=['accuracy']
-    elif  os.upper(model_type) == 'DENSENET201':
+    elif  model_type.upper() == 'DENSENET201':
         loss='categorical_crossentropy'
         opt =tf.keras.optimizers.Adam(learning_rate=0.001)
         metrics=['accuracy']
-    elif os.upper(model_type) == 'DENSENET121':
+    elif model_type.upper() == 'DENSENET121':
         loss='categorical_crossentropy'
         opt='adam'
         metrics=['accuracy', tf.keras.metrics.Recall()]

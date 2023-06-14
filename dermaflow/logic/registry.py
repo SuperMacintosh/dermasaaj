@@ -5,6 +5,8 @@ import time
 from tensorflow import keras
 from google.cloud import storage
 from dermaflow.params import *
+from dermaflow.logic.model import compile_model
+
 
 def save_model(model: keras.Model = None,model_type:str=MODEL_TYPE) -> None:
     """
@@ -62,7 +64,8 @@ def load_model(stage="Production", model_type:str=MODEL_TYPE) -> keras.Model:
 
         print("\nLoad latest model from disk...")
 
-        latest_model = keras.models.load_model(most_recent_model_path_on_disk)
+        latest_model = keras.models.load_model(most_recent_model_path_on_disk, compile=False)
+        latest_model = compile_model(latest_model, MODEL_TYPE)
 
         print("✅ Model loaded from local disk")
 
@@ -80,7 +83,8 @@ def load_model(stage="Production", model_type:str=MODEL_TYPE) -> keras.Model:
             latest_model_path_to_save = os.path.join(LOCAL_REGISTRY_PATH, latest_blob.name)
             latest_blob.download_to_filename(latest_model_path_to_save)
 
-            latest_model = keras.models.load_model(latest_model_path_to_save)
+            latest_model = keras.models.load_model(latest_model_path_to_save, compile=False)
+            latest_model = compile_model(latest_model, MODEL_TYPE)
 
             print("✅ Latest model downloaded from cloud storage")
 

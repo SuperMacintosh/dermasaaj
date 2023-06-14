@@ -6,10 +6,14 @@ from dermaflow.params import *
 import numpy as np
 import cv2
 from keras.applications.densenet import preprocess_input
-
+from dermaflow.logic.model import compile_model
 
 app = FastAPI()
-model=load_model()
+
+# model=load_model()
+
+model = tf.keras.models.load_model('DenseNet121_best_model.keras', compile=False)
+model = compile_model(model, MODEL_TYPE)
 app.state.model=model
 
 # Allowing all middleware is optional, but good practice for dev purposes
@@ -22,28 +26,31 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
-@app.post("/predict_test")
+@app.post("/test2")
 
-def predict_test(img_file: UploadFile=File(...)):
+async def predict_test(img: UploadFile=File(...)):
     ### Receiving and decoding the image
-    return {'message': ' ✅ Api reached '}
+    contents = await img.read()
+    return {'message': '✅ Api reached '}
 
 # Predict end point
 @app.post("/predict_cnn")
 
-async def predict_cnn(img_file: UploadFile=File(...)):
+async def predict_cnn(img: UploadFile=File(...)):
     ### Receiving and decoding the image
 
     if app.state.model == None:
         return {'message': f"\n❌ No model found where asked"}
 
-    contents = await img_file.read()
+    contents = await img.read()
     nparr = np.fromstring(contents, np.uint8)
     img_array = cv2.imdecode(nparr, cv2.IMREAD_COLOR) # type(cv2_img) => numpy.ndarray
+    img_array=cv2.resize(img_array, (IMAGE_HEIGHT, IMAGE_WIDTH))
     img_array= preprocess_input(img_array)
     img_array = tf.expand_dims(img_array, 0)
     result=app.state.model.predict(img_array)
     msg=f'✅ This image most likely belongs to {CLASS_NAMES[np.argmax(result)]} with a probability of {round(100*np.max(result),2)}%'
+
     return {'message': msg}
 
 
