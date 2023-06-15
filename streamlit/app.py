@@ -123,8 +123,9 @@ if col3.button('Valider'):
     #'age': age,
     #'lesion':lesion
     #}
-    url=https://api-kpmfnijgja-ew.a.run.app
-    res = requests.post(url, files={'img': bytes_data}, headers=headers)
+    url='https://api-kpmfnijgja-ew.a.run.app'
+
+    res = requests.post(url, files={'img': bytes_data})
     if res.status_code == 200:
         st.write(res.content)
         response=res.json()
