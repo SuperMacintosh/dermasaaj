@@ -15,7 +15,7 @@ st.set_page_config(
 
 
 
-path = Path(__file__).parents[1]
+url='https://api-kpmfnijgja-ew.a.run.app'
 
 #pages = st.source_util.get_pages('app.py')
 show_pages(
@@ -112,18 +112,26 @@ if uploaded_file is not None:
 
     bytes_data = uploaded_file.getvalue()
 
+    res = requests.post(url, files={'img': bytes_data})
+    if res.status_code == 200:
+        st.write(res.content)
+        response=res.json()
+        #st.write(f"{round(response['proba'],3)} pourcent de chance d'être en bonne santé")
+        st.write(response['message'])
+
+    else:
+        st.markdown("**Oops**, something went wrong 😓 Please try again.")
+        print(res.status_code, res.content)
+
 
 
 #############################################################
 
+
+
 col1, col2,col3,col4,col5= st.columns(5)
 if col3.button('Valider'):
-    #params = {
-    #'sex': sex,
-    #'age': age,
-    #'lesion':lesion
-    #}
-    url='https://api-kpmfnijgja-ew.a.run.app'
+
 
     res = requests.post(url, files={'img': bytes_data})
     if res.status_code == 200:
