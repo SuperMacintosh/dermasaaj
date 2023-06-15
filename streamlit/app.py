@@ -20,7 +20,7 @@ path = Path(__file__).parents[1]
 #pages = st.source_util.get_pages('app.py')
 show_pages(
     [
-        Page("app.py", "Lesion prediction", ":mag:"),
+        Page("streamlit/app.py", "Lesion prediction", ":mag:"),
         Page("pages/faq.py", "FAQ", ":question:"),
     ]
 )
@@ -72,9 +72,6 @@ def add_logo():
         unsafe_allow_html=True,
     )
 add_logo()
-import subprocess
-print(subprocess.run(["pwd"],capture_output=True))
-print(__file__)
 image = Image.open("/app/dermasaaj/streamlit/dermacare-logo.png") #Brand logo image (optional)
 #st.sidebar.image("illlustr3.png", use_column_width=True)
 
