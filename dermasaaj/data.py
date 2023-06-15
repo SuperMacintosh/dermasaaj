@@ -50,6 +50,10 @@ class Dataloader():
             for sub_dir in  path.glob("*") :
                 files += list(sub_dir.glob("*.jpg"))
 
+
+
+            print(files)
+
             print(f"Found {len(files)} files belonging to {n_classes} classe{'s' if n_classes>0 else ''}")
             np.random.shuffle(files) # Inplace methode
             for path in files :
@@ -113,19 +117,22 @@ if __name__=="__main__":
         input_cnn = Input(shape=(128,128,3))
         input_meta = Input(shape=(12))
 
-        output_cnn = Conv2D(10,3)(input_cnn)
-        output_cnn = MaxPool2D()(output_cnn)
-        output_cnn = Conv2D(10,3)(output_cnn)
-        output_cnn = MaxPool2D()(output_cnn)
+        output_cnn = Conv2D(16, (4, 4), padding='same', activation='relu')(input_cnn)
+        output_cnn = MaxPool2D(2)(output_cnn)
+        output_cnn = Conv2D(32, 3, padding='same', activation='relu')(output_cnn)
+        output_cnn = MaxPool2D(2)(output_cnn)
+        output_cnn = Conv2D(64, 2, padding='same', activation='relu')(output_cnn)
+        output_cnn = MaxPool2D(2)(output_cnn)
+
         flat = Flatten()(output_cnn)
-
-        output_dense = Dense(3)(input_meta)
-
-        combined = Concatenate()([flat, output_dense])
+        flat=Dense(64)(flat)
+        #output_dense = Dense(8)(input_meta)
+        combined = Concatenate()([flat, input_meta])
         y = Dense(8,activation="softmax")(combined)
         return Model(inputs=[input_cnn,input_meta],outputs=y)
+
     model = initialize_model()
     model.summary()
-    model.compile(optimizer="adam",loss="categorical_crossentropy")
-    model.fit(ds_train,epochs=2
+    model.compile(optimizer="adam",loss="categorical_crossentropy",metrics=['accuracy',tf.keras.metrics.Recall(name='recall'),tf.keras.metrics.AUC(name='AUC'),tf.keras.metrics.Precision(name='precision')])
+    model.fit(ds_train,epochs=5
               ,validation_data=ds_val)
