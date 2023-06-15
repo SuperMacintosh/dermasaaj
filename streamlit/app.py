@@ -15,7 +15,7 @@ st.set_page_config(
 
 
 
-url='https://api-kpmfnijgja-ew.a.run.app'
+url='https://api-kpmfnijgja-ew.a.run.app/predict_cnn'
 
 #pages = st.source_util.get_pages('app.py')
 show_pages(
@@ -109,6 +109,8 @@ if uploaded_file is not None:
 
     #image = Image.open(uploaded_file)
     st.image(uploaded_file, width=400,caption='Lésion cutanée')
+    with st.spinner("Wait for it..."):
+
 
     bytes_data = uploaded_file.getvalue()
 
@@ -129,24 +131,24 @@ if uploaded_file is not None:
 
 
 
-col1, col2,col3,col4,col5= st.columns(5)
-if col3.button('Valider'):
+#col1, col2,col3,col4,col5= st.columns(5)
+#if col3.button('Valider'):
 
 
-    res = requests.post(url, files={'img': bytes_data})
-    if res.status_code == 200:
-        st.write(res.content)
-        response=res.json()
-        #st.write(f"{round(response['proba'],3)} pourcent de chance d'être en bonne santé")
-        st.write(response['message'])
+ #   res = requests.post(url, files={'img': bytes_data})
+  #  if res.status_code == 200:
+   #     st.write(res.content)
+    #    response=res.json()
+     #   #st.write(f"{round(response['proba'],3)} pourcent de chance d'être en bonne santé")
+      #  st.write(response['message'])
 
-    else:
-        st.markdown("**Oops**, something went wrong 😓 Please try again.")
-        print(res.status_code, res.content)
+    #else:
+     #   st.markdown("**Oops**, something went wrong 😓 Please try again.")
+ #       print(res.status_code, res.content)
 
 
 
-    pass
+
 else:
     pass
 
