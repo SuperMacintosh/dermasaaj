@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 from PIL import Image
 from st_pages import Page, show_pages, add_page_title
-
+from pathlib import Path
 
 
 st.set_page_config(
@@ -14,6 +14,9 @@ st.set_page_config(
 )
 
 
+my_file = path+'/photo.png'
+
+path = Path(__file__).parents[1]
 
 #pages = st.source_util.get_pages('app.py')
 show_pages(
@@ -70,7 +73,7 @@ def add_logo():
         unsafe_allow_html=True,
     )
 add_logo()
-image = Image.open('/app/streamlit/dermacare-logo.png') #Brand logo image (optional)
+image = Image.open(f"{path}/dermacare-logo.png") #Brand logo image (optional)
 #st.sidebar.image("illlustr3.png", use_column_width=True)
 
 #Create two columns with different width

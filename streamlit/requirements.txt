@@ -2,3 +2,4 @@ requests
 streamlit
 Pillow
 st_pages
+pathlib
