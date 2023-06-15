@@ -111,19 +111,18 @@ if uploaded_file is not None:
     st.image(uploaded_file, width=400,caption='Lésion cutanée')
     with st.spinner("Wait for it..."):
 
+        bytes_data = uploaded_file.getvalue()
 
-    bytes_data = uploaded_file.getvalue()
+        res = requests.post(url, files={'img': bytes_data})
+        if res.status_code == 200:
+            st.write(res.content)
+            response=res.json()
+            #st.write(f"{round(response['proba'],3)} pourcent de chance d'être en bonne santé")
+            st.write(response['message'])
 
-    res = requests.post(url, files={'img': bytes_data})
-    if res.status_code == 200:
-        st.write(res.content)
-        response=res.json()
-        #st.write(f"{round(response['proba'],3)} pourcent de chance d'être en bonne santé")
-        st.write(response['message'])
-
-    else:
-        st.markdown("**Oops**, something went wrong 😓 Please try again.")
-        print(res.status_code, res.content)
+        else:
+            st.markdown("**Oops**, something went wrong 😓 Please try again.")
+            print(res.status_code, res.content)
 
 
 
