@@ -123,15 +123,17 @@ if col3.button('Valider'):
     #'age': age,
     #'lesion':lesion
     #}
+    url=https://api-kpmfnijgja-ew.a.run.app
+    res = requests.post(url, files={'img': bytes_data}, headers=headers)
+    if res.status_code == 200:
+        st.write(res.content)
+        response=res.json()
+        #st.write(f"{round(response['proba'],3)} pourcent de chance d'être en bonne santé")
+        st.write(response['message'])
 
-    #res = requests.post(url, files={'img': bytes_data}, data=params, headers=headers)
-    #if res.status_code == 200:
-    #   st.write(res.content)
-    # response=res.json()
-    #st.write(f"{round(response['proba'],3)} pourcent de chance d'être en bonne santé")
-    #else:
-    #   st.markdown("**Oops**, something went wrong 😓 Please try again.")
-    #  print(res.status_code, res.content)
+    else:
+        st.markdown("**Oops**, something went wrong 😓 Please try again.")
+        print(res.status_code, res.content)
 
 
 
