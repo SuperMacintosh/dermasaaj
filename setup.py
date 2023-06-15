@@ -1,17 +1,14 @@
-from setuptools import find_packages
+
+# setup.py
 from setuptools import setup
+from setuptools import find_packages
 
-with open("requirements.txt") as f:
+# list dependencies from file
+with open('requirements.txt') as f:
     content = f.readlines()
-requirements = [x.strip() for x in content if "git+" not in x]
+requirements = [x.strip() for x in content]
 
-setup(name='dermaflow',
-      version="0.0.1",
-      description="Dermasaaj Model",
-      license="MIT",
-      author="Le Wagon",
-      author_email="contact@lewagon.org",
-      #url="https://github.com/lewagon/taxi-fare",
-      install_requires=requirements,
-      packages=find_packages()
-)
+setup(name='dermasaaj',
+      description="Deep Learning for skin diseases",
+      packages=find_packages(), # NEW: find packages automatically
+      install_requires=requirements) # NEW

@@ -1,3 +1,10 @@
 raw_data/
-.env
-Untitled1.ipynb
+
+notebooks/
+*.ipynb
+pansement/
+cropped_data/
+.DS_Store
+ATTRIBUTION.txt
+CSV_concatenate.ipynb
+**/__pycache__/
