@@ -72,6 +72,9 @@ def add_logo():
         unsafe_allow_html=True,
     )
 add_logo()
+import subprocess
+print(subprocess.run(["pwd"],capture_output=True))
+print(__file__)
 image = Image.open("/app/streamlit/dermacare-logo.png") #Brand logo image (optional)
 #st.sidebar.image("illlustr3.png", use_column_width=True)
 
