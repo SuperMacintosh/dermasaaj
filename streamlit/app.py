@@ -70,7 +70,7 @@ def add_logo():
         unsafe_allow_html=True,
     )
 add_logo()
-image = Image.open(r'dermacare-logo.png') #Brand logo image (optional)
+image = Image.open('/app/streamlit/dermacare-logo.png') #Brand logo image (optional)
 #st.sidebar.image("illlustr3.png", use_column_width=True)
 
 #Create two columns with different width

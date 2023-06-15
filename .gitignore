@@ -7,3 +7,16 @@ cropped_data/
 ATTRIBUTION.txt
 CSV_concatenate.ipynb
 **/__pycache__/
+additional_data.zip
+additional_data_binary.zip
+additional_data_binary/
+additional_data/
+prove_ai/
+ISIC2020/
+isictest/
+sydney/
+easy/
+HIBA/
+archive/
+Binary/
+cropped_data_aug/
