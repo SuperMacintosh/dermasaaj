@@ -20,8 +20,8 @@ url='https://api-kpmfnijgja-ew.a.run.app/predict_cnn'
 #pages = st.source_util.get_pages('app.py')
 show_pages(
     [
-        Page("streamlit/app.py", ":mag: Lesion prediction", ":mag:"),
-        Page("streamlit/pages/faq.py", ":question: FAQ", ":question:"),
+        Page("streamlit/app.py", "Lesion prediction", ":mag:"),
+        Page("streamlit/pages/faq.py", "FAQ", ":question:"),
     ]
 )
 
@@ -117,7 +117,7 @@ def speech(lesion):
 
     if lesion=='NV':
         st.write('Le modèle a prédit un grain de beauté bénin aussi appelé Naevus :grinning:')
-        st.write(' Nous vous rappelons que cette prédiction ne remplace pas un diagnostic médical.')
+        st.write(' Nous vous rappelons que cette prédiction ne remplace pas un diagnostic fait par un médecin.')
         st.write('Informations complémentaires: [https://fr.wikipedia.org/wiki/Grain_de_beauté](https://fr.wikipedia.org/wiki/Grain_de_beaut%C3%A9)')
 
     elif lesion=='MEL':
