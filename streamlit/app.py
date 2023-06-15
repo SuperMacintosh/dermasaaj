@@ -14,7 +14,6 @@ st.set_page_config(
 )
 
 
-my_file = path+'/photo.png'
 
 path = Path(__file__).parents[1]
 
