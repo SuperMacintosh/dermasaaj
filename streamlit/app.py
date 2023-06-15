@@ -1,12 +1,8 @@
 import streamlit as st
 import requests
-import datetime
-import pandas as pd
 from PIL import Image
 from st_pages import Page, show_pages, add_page_title
-from tempfile import NamedTemporaryFile
-import numpy as np
-import base64
+
 
 
 st.set_page_config(
@@ -16,6 +12,9 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 
 )
+
+
+
 #pages = st.source_util.get_pages('app.py')
 show_pages(
     [
@@ -23,6 +22,31 @@ show_pages(
         Page("pages/faq.py", "FAQ", ":question:"),
     ]
 )
+
+
+
+def add_logo():
+    st.markdown(
+        """
+        <style>
+            [data-testid="stSidebarNav"] {
+                background-image: url(logo.png);
+                background-repeat: no-repeat;
+                padding-top: 120px;
+                background-position: 20px 20px;
+            }
+            [data-testid="stSidebarNav"]::before {
+                content: "My Company Name";
+                margin-left: 20px;
+                margin-top: 20px;
+                font-size: 30px;
+                position: relative;
+                top: 100px;
+            }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
 
 
 
@@ -46,22 +70,23 @@ def add_logo():
         unsafe_allow_html=True,
     )
 add_logo()
-image = Image.open(r'logo.png') #Brand logo image (optional)
+image = Image.open(r'dermacare-logo.png') #Brand logo image (optional)
+#st.sidebar.image("illlustr3.png", use_column_width=True)
 
 #Create two columns with different width
-col1, col2 = st.columns( [0.8, 0.18])
+col1, col2 = st.columns( [0.8, 0.12])
 with col1:               # To display the header text using css style
     st.markdown(""" <style> .font {
-    font-size:32px ; font-family: 'Cooper Black'; font-weight: bold;color: #FF9633;}
+    font-size:35px ; font-family: 'Cooper Black'; font-weight: 700;color: #FF9633;}
+    #colorbis #ff7412
     </style> """, unsafe_allow_html=True)
-    st.markdown('<p class="font">Dermasaaj votre assistant cutané</p>', unsafe_allow_html=True)
+    st.markdown('<p class="font">Dermacare votre assistant cutané</p>', unsafe_allow_html=True)
 
 with col2:               # To display brand logo
     st.image(image,  width=150)
 
 age = st.number_input('Votre âge ?', min_value=0, max_value=100, step=1)
 
-#year = st.selectbox('Année de naissance', range(1920, 2021))
 
 sex = st.radio('Votre sexe', ('Homme', 'Femme'),horizontal=True)
 
@@ -84,6 +109,7 @@ if uploaded_file is not None:
     st.image(uploaded_file, width=400,caption='Lésion cutanée')
 
     bytes_data = uploaded_file.getvalue()
+
 
 
 #############################################################
