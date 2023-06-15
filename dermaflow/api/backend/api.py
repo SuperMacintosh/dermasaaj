@@ -45,7 +45,8 @@ async def predict_cnn(img: UploadFile=File(...)):
     result=app.state.model.predict(img_array)
     categ=CLASS_NAMES[np.argmax(result)]
     prob=round(100*np.max(result),2)
-    msg=f'✅ This image most likely belongs to {categ} with a probability of {prob}%'
+    # msg=f'✅ This image most likely belongs to {categ} with a probability of {prob}%'
+    msg=f'{categ} {prob}'
     # return {'message': msg, 'categ':categ, 'proba': result}
     return {'message': msg}
 @app.get("/")
