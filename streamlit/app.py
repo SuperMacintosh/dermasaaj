@@ -20,8 +20,8 @@ url='https://api-kpmfnijgja-ew.a.run.app/predict_cnn'
 #pages = st.source_util.get_pages('app.py')
 show_pages(
     [
-        Page("streamlit/app.py", "Lesion prediction", ":mag:"),
-        Page("streamlit/pages/faq.py", "FAQ", ":question:"),
+        Page("streamlit/app.py", ":mag: Lesion prediction", ":mag:"),
+        Page("streamlit/pages/faq.py", ":question: FAQ", ":question:"),
     ]
 )
 
@@ -122,20 +122,20 @@ def speech(lesion):
 
     elif lesion=='MEL':
         st.write("Le mélanome est un cancer de la peau développé à partir de cellules appelées mélanocytes. Lorsqu'il est dépisté à un stade précoce, il peut être traité efficacement.")
-        st.write("Cette prédiction ne remplace en aucun cas un diagnostic par un médecin. Nous vous encourageons cependant d'aller consulter rapidement un médecin pour faire examiner votre lésion.")
+        st.write("Cette prédiction ne remplace en aucun cas un diagnostic fait par un médecin. Nous vous recommandons d'aller consulter rapidement un médecin pour faire examiner votre lésion.")
         st.write('Prendre rendez-vous avec un dermatologue sur [Doctolib](https://www.doctolib.fr/dermatologue)')
 
     elif st.write=='BCC':
         st.write("Le carcinome basocellulaire est un cancer de la peau. Son évolution est généralement lente et son traitement très efficace.")
-        st.write("Cette prédiction ne remplace en aucun cas un diagnostic par un médecin. Nous vous encourageons cependant d'aller consulter rapidement un médecin pour faire examiner votre lésion.")
+        st.write("Cette prédiction ne remplace en aucun cas un diagnostic fait par un médecin. Nous vous recommandons d'aller consulter rapidement un médecin pour faire examiner votre lésion.")
         st.write('Prendre rendez-vous avec un dermatologue sur [Doctolib](https://www.doctolib.fr/dermatologue)')
 
     elif st.write=='SCC':
         st.write("Le carcinome épidermoïde est un cancer de la peau. Dépisté à temps il répond bien aux traitements.")
-        st.write("Cette prédiction ne remplace en aucun cas un diagnostic par un médecin. Nous vous encourageons cependant d'aller consulter rapidement un médecin pour faire examiner votre lésion.")
+        st.write("Cette prédiction ne remplace en aucun cas un diagnostic fait par un médecin. Nous vous recommandons d'aller consulter rapidement un médecin pour faire examiner votre lésion.")
         st.write('Prendre rendez-vous avec un dermatologue sur [Doctolib](https://www.doctolib.fr/dermatologue)')
     else:
-        st.write("Cette prédiction ne remplace en aucun cas un diagnostic par un médecin.")
+        st.write("Cette prédiction ne remplace en aucun cas un diagnostic fait par un médecin.")
         st.write('Prendre rendez-vous avec un dermatologue sur [Doctolib](https://www.doctolib.fr/dermatologue)')
 
 
