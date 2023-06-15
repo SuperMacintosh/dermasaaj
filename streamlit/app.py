@@ -75,7 +75,7 @@ add_logo()
 import subprocess
 print(subprocess.run(["pwd"],capture_output=True))
 print(__file__)
-image = Image.open("/app/streamlit/dermacare-logo.png") #Brand logo image (optional)
+image = Image.open("/app/dermasaaj/streamlit/dermacare-logo.png") #Brand logo image (optional)
 #st.sidebar.image("illlustr3.png", use_column_width=True)
 
 #Create two columns with different width
