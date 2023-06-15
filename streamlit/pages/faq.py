@@ -3,8 +3,8 @@ from st_pages import Page, show_pages, add_page_title
 
 add_page_title('FAQ')
 
-st.markdown("**Dermasaaj peut-il remplacer un médecin ?**")
-st.write("Non, Dermasaaj ne réalise que des prédictions et ne remplace en aucun cas une visite médicale.")
+st.markdown("**Dermacare peut-il remplacer un médecin ?**")
+st.write("Non, Dermacare ne réalise que des prédictions et ne remplace en aucun cas une visite médicale.")
 
 
 st.markdown("**J'ai un résultat préoccupant, que dois- faire ?**")

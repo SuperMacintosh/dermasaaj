@@ -102,6 +102,43 @@ st.set_option('deprecation.showfileUploaderEncoding', False)
 uploaded_file = st.file_uploader("Choisissez une photo de votre lésion", type=['png', 'jpg'] )
 
 
+class_cut= {'AK':'Kératose actinique',
+         'BCC':'Carcinome basocellulaire',
+         'BKL':'Kératose séborrhéique',
+         'DF':'Dermatofibromes',
+         'MEL':'Mélanome',
+         'NV': "Grain de beauté bénin",
+         'SCC': 'Carcinome épidermoïde',
+         'VASC': 'Lésion vasculaire'
+
+         }
+
+def speech(lesion):
+
+    if lesion=='NV':
+        st.write('Le modèle a prédit un grain de beauté bénin aussi appelé Naevus :grinning:')
+        st.write(' Nous vous rappelons que cette prédiction ne remplace pas un diagnostic médical.')
+        st.write('Informations complémentaires: [https://fr.wikipedia.org/wiki/Grain_de_beauté](https://fr.wikipedia.org/wiki/Grain_de_beaut%C3%A9)')
+
+    elif lesion=='MEL':
+        st.write("Le mélanome est un cancer de la peau développé à partir de cellules appelées mélanocytes. Lorsqu'il est dépisté à un stade précoce, il peut être traité efficacement.")
+        st.write("Cette prédiction ne remplace en aucun cas un diagnostic par un médecin. Nous vous encourageons cependant d'aller consulter rapidement un médecin pour faire examiner votre lésion.")
+        st.write('Prendre rendez-vous avec un dermatologue sur [Doctolib](https://www.doctolib.fr/dermatologue)')
+
+    elif st.write=='BCC':
+        st.write("Le carcinome basocellulaire est un cancer de la peau. Son évolution est généralement lente et son traitement très efficace.")
+        st.write("Cette prédiction ne remplace en aucun cas un diagnostic par un médecin. Nous vous encourageons cependant d'aller consulter rapidement un médecin pour faire examiner votre lésion.")
+        st.write('Prendre rendez-vous avec un dermatologue sur [Doctolib](https://www.doctolib.fr/dermatologue)')
+
+    elif st.write=='SCC':
+        st.write("Le carcinome épidermoïde est un cancer de la peau. Dépisté à temps il répond bien aux traitements.")
+        st.write("Cette prédiction ne remplace en aucun cas un diagnostic par un médecin. Nous vous encourageons cependant d'aller consulter rapidement un médecin pour faire examiner votre lésion.")
+        st.write('Prendre rendez-vous avec un dermatologue sur [Doctolib](https://www.doctolib.fr/dermatologue)')
+    else:
+        st.write("Cette prédiction ne remplace en aucun cas un diagnostic par un médecin.")
+        st.write('Prendre rendez-vous avec un dermatologue sur [Doctolib](https://www.doctolib.fr/dermatologue)')
+
+
 
 if uploaded_file is not None:
 
@@ -115,49 +152,19 @@ if uploaded_file is not None:
 
         res = requests.post(url, files={'img': bytes_data})
         if res.status_code == 200:
-            st.write(res.content)
+            #st.write(res.content)
             response=res.json()
             #st.write(f"{round(response['proba'],3)} pourcent de chance d'être en bonne santé")
-            st.write(response['message'])
+            #st.write(response['message'])
+            splito=response['message'].split()
+            diag=splito[0]
+            proba=splito[1]
+            st.markdown(f"**Prédiction:** {class_cut[diag]} - **Fiabilité:**  {proba}%")
+            speech(str(diag))
 
         else:
             st.markdown("**Oops**, something went wrong 😓 Please try again.")
             print(res.status_code, res.content)
-
-
-
-#############################################################
-
-
-
-#col1, col2,col3,col4,col5= st.columns(5)
-#if col3.button('Valider'):
-
-
- #   res = requests.post(url, files={'img': bytes_data})
-  #  if res.status_code == 200:
-   #     st.write(res.content)
-    #    response=res.json()
-     #   #st.write(f"{round(response['proba'],3)} pourcent de chance d'être en bonne santé")
-      #  st.write(response['message'])
-
-    #else:
-     #   st.markdown("**Oops**, something went wrong 😓 Please try again.")
- #       print(res.status_code, res.content)
-
-
-
-
-else:
-    pass
-
-
-
-
-#headers = {
- #   "Authorization" : "xxx",
-  #  "Content-Type": "application/json"
-#}
 
 
 
