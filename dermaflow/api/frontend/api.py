@@ -25,24 +25,17 @@ show_pages(
     ]
 )
 
-
-
-
-
-
 #st.title("Dermasaaj votre assistant cutané")
 def add_logo():
     st.markdown(unsafe_allow_html=True)
 
 add_logo()
-image = Image.open(r'./logo.png') #Brand logo image (optional)
+image = Image.open(r'logo.png') #Brand logo image (optional)
 
 #Create two columns with different width
 col1, col2 = st.columns( [0.8, 0.18])
 with col1:               # To display the header text using css style
-    st.markdown(""" <style> .font {
-    font-size:32px ; font-family: 'Cooper Black'; font-weight: bold;color: #FF9633;}
-    </style> """, unsafe_allow_html=True)
+    st.markdown(unsafe_allow_html=True)
     st.markdown('<p class="font">Dermasaaj votre assistant cutané</p>', unsafe_allow_html=True)
 
 with col2:               # To display brand logo

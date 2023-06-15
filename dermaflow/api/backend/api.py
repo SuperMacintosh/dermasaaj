@@ -1,13 +1,12 @@
 from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
-from dermaflow.logic.registry import load_model
+from logic.registry import load_model
 import tensorflow as tf
-from dermaflow.params import *
+from params import *
 import numpy as np
 import time
 from keras.applications.densenet import preprocess_input
-from dermaflow.logic.model import compile_model
-# import tempfile
+from logic.model import compile_model
 
 app = FastAPI()
 

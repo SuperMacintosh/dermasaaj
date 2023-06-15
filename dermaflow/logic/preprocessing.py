@@ -1,4 +1,4 @@
-from dermaflow.params import *
+from params import *
 import tensorflow as tf
 import os
 from tensorflow import keras

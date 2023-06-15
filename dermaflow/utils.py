@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import os
 import pandas as pd
-from dermaflow.params import *
+from params import *
 
 
 def plot_loss_accuracy(history, epochs:int):

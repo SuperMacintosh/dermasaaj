@@ -4,8 +4,8 @@ import time
 
 from tensorflow import keras
 from google.cloud import storage
-from dermaflow.params import *
-from dermaflow.logic.model import compile_model
+from params import *
+from logic.model import compile_model
 
 
 def save_model(model: keras.Model = None,model_type:str=MODEL_TYPE) -> None:
@@ -53,8 +53,8 @@ def load_model(stage="Production", model_type:str=MODEL_TYPE, compile:bool=True)
         print("\nLoad latest model from local registry...")
 
         # Get the latest model version name by the timestamp on disk
-        local_model_directory = os.path.join(LOCAL_REGISTRY_PATH, "models")
-        local_model_paths = glob.glob(f"{local_model_directory}/{model_type}_*{MODEL_SUFFIX}")
+        local_model_directory = os.path.join(LOCAL_REGISTRY_PATH, "model")
+        local_model_paths = glob.glob(f"model/{model_type}_*{MODEL_SUFFIX}")
         print(local_model_paths)
         if not local_model_paths:
             print(f"\n❌ repo not found {local_model_paths}")
@@ -77,12 +77,12 @@ def load_model(stage="Production", model_type:str=MODEL_TYPE, compile:bool=True)
 
         client = storage.Client()
         blobs = list(client.get_bucket(BUCKET_NAME).list_blobs(prefix="model"))
-
+        print(blobs)
         try:
             latest_blob = max(blobs, key=lambda x: x.updated)
             latest_model_path_to_save = os.path.join(LOCAL_REGISTRY_PATH, latest_blob.name)
             latest_blob.download_to_filename(latest_model_path_to_save)
-
+            print(latest_model_path_to_save)
             latest_model = keras.models.load_model(latest_model_path_to_save, compile=compile)
             # latest_model = compile_model(latest_model, MODEL_TYPE)
 

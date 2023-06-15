@@ -1,20 +1,20 @@
 from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
-from dermaflow.logic.registry import load_model
+from logic.registry import load_model
 import tensorflow as tf
-from dermaflow.params import *
+from params import *
 import numpy as np
 import cv2
 import time
 from keras.applications.densenet import preprocess_input
-from dermaflow.logic.model import compile_model
+from logic.model import compile_model
 # import tempfile
 
 app = FastAPI()
 
 model=load_model(compile=False)
 # model = tf.keras.models.load_model('DenseNet121_best_model.keras', compile=False)
-model = compile_model(model, MODEL_TYPE)
+# model = compile_model(model, MODEL_TYPE)
 app.state.model=model
 
 # Allowing all middleware is optional, but good practice for dev purposes

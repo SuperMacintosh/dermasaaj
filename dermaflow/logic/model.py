@@ -4,8 +4,8 @@ from keras import Model, Sequential, layers
 from keras.callbacks import EarlyStopping,CSVLogger, ModelCheckpoint, ReduceLROnPlateau
 import tensorflow as tf
 import os
-from dermaflow.logic.preprocessing import data_augmentation
-from dermaflow.params import *
+from logic.preprocessing import data_augmentation
+from params import *
 from keras.applications.densenet import DenseNet201, DenseNet121
 
 def initialize_model(num_classes:int,

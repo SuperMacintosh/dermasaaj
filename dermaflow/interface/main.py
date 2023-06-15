@@ -1,8 +1,8 @@
-from dermaflow.logic.preprocessing import initialize_dataset_from_file, get_split_image_data,densenet201_preprocess
-from dermaflow.logic.model import initialize_model, compile_model, train_model, evaluate_model
-from dermaflow.logic.registry import save_model
+from logic.preprocessing import initialize_dataset_from_file, get_split_image_data,densenet201_preprocess
+from logic.model import initialize_model, compile_model, train_model, evaluate_model
+from logic.registry import save_model
 from pathlib import Path
-from dermaflow.params import *
+from params import *
 
 # Extract if need be dataset from archive
 # original or cropped and augmented dataset
