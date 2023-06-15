@@ -21,7 +21,7 @@ path = Path(__file__).parents[1]
 show_pages(
     [
         Page("streamlit/app.py", "Lesion prediction", ":mag:"),
-        Page("pages/faq.py", "FAQ", ":question:"),
+        Page("streamlit/pages/faq.py", "FAQ", ":question:"),
     ]
 )
 
