@@ -93,7 +93,7 @@ age = st.number_input('Votre âge ?', min_value=0, max_value=100, step=1)
 sex = st.radio('Votre sexe', ('Homme', 'Femme'),horizontal=True)
 
 
-lesion = st.selectbox('Localisation de la lésion', ['torse','tête/nuque','torse latéral','jambe/pied','oral/génital','paume/plante','dos','bras/main','autre'])
+lesion = st.selectbox('Localisation de la lésion', ['bras','main','tête/nuque','torse latéral','jambe/pied','oral/génital','paume/plante','dos','torse','autre'])
 
 st.set_option('deprecation.showfileUploaderEncoding', False)
 
