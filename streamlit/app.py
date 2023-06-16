@@ -146,7 +146,7 @@ if uploaded_file is not None:
 
     #image = Image.open(uploaded_file)
     st.image(uploaded_file, width=400,caption='Lésion cutanée')
-    with st.spinner("Wait for it..."):
+    with st.spinner("Merci de patienter..."):
 
         bytes_data = uploaded_file.getvalue()
 
