@@ -104,7 +104,7 @@ uploaded_file = st.file_uploader("Choisissez une photo de votre lésion", type=[
 
 class_cut= {'AK':'Kératose actinique',
          'BCC':'Carcinome basocellulaire',
-         'BKL':'Kératose séborrhéique',
+         'BKL':'Kératose/lésion bégnine',
          'DF':'Dermatofibromes',
          'MEL':'Mélanome',
          'NV': "Grain de beauté bénin",
