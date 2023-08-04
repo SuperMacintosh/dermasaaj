@@ -1,6 +1,6 @@
 import streamlit as st
 import requests
-from PIL import Image
+#from PIL import Image
 from st_pages import Page, show_pages, add_page_title
 from pathlib import Path
 
@@ -28,11 +28,13 @@ show_pages(
 
 
 def add_logo():
+
+ # background-image: url(logo.png); (dans le style)
     st.markdown(
         """
         <style>
             [data-testid="stSidebarNav"] {
-                background-image: url(logo.png);
+
                 background-repeat: no-repeat;
                 padding-top: 120px;
                 background-position: 20px 20px;
@@ -72,7 +74,7 @@ def add_logo():
         unsafe_allow_html=True,
     )
 add_logo()
-image = Image.open("/app/dermasaaj/streamlit/dermacare-logo.png") #Brand logo image (optional)
+#image = Image.open("/app/dermasaaj/streamlit/dermacare-logo.png") #Brand logo image (optional)
 #st.sidebar.image("illlustr3.png", use_column_width=True)
 
 #Create two columns with different width
