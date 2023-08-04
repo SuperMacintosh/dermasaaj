@@ -86,8 +86,8 @@ with col1:               # To display the header text using css style
     </style> """, unsafe_allow_html=True)
     st.markdown('<p class="font">Dermacare votre assistant cutané</p>', unsafe_allow_html=True)
 
-with col2:               # To display brand logo
-    st.image(image,  width=150)
+#with col2:               # To display brand logo
+  #  st.image(image,  width=150)
 
 age = st.number_input('Votre âge ?', min_value=0, max_value=100, step=1)
 
